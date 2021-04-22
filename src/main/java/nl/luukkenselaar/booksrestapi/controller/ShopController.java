@@ -1,70 +1,69 @@
 package nl.luukkenselaar.booksrestapi.controller;
 
-import nl.luukkenselaar.booksrestapi.model.Book;
-import nl.luukkenselaar.booksrestapi.service.BookService;
+import nl.luukkenselaar.booksrestapi.model.Shop;
+import nl.luukkenselaar.booksrestapi.service.ShopService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("books")
-public class BookController {
+@RequestMapping("shops")
+public class ShopController {
 
-    private final BookService bookService;
+    private final ShopService shopService;
 
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
+    public ShopController(ShopService shopService) {
+        this.shopService = shopService;
     }
 
-    // GET ALL BOOKS
+    // GET ALL SHOPS
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllBooks() {
-        List<Book> books = bookService.getAllBooks();
-        return ResponseEntity.status(200).body(books);
+    public ResponseEntity<?> getAllShops() {
+        List<Shop> shops = shopService.getAllShops();
+        return ResponseEntity.status(200).body(shops);
     }
 
-    // GET BOOKS BY YEAR
+    // GET SHOPS BY YEAR
     @RequestMapping(value = "/year/{year}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getBooksByYear(@PathVariable int year) {
+    public ResponseEntity<?> getShopsByYear(@PathVariable int year) {
         try {
-            Iterable<Book> books = bookService.getBooksByYear(year);
-            return ResponseEntity.status(HttpStatus.OK).body(books);
+            Iterable<Shop> shops = shopService.getShopsByYear(year);
+            return ResponseEntity.status(HttpStatus.OK).body(shops);
         } catch (IllegalArgumentException iae) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    // GET A SPECIFIC BOOK
+    // GET A SPECIFIC SHOP
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getBookById(@PathVariable int id) {
+    public ResponseEntity<?> getShopById(@PathVariable int id) {
         try {
-            Optional<Book> book = bookService.getBookById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(book);
+            Optional<Shop> shop = shopService.getShopById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(shop);
         } catch (IllegalArgumentException iae) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    // ADD A NEW BOOK
+    // ADD A NEW SHOP
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addBook(@RequestBody Book book) {
+    public ResponseEntity<?> addShop(@RequestBody Shop shop) {
         try {
-            Book result = bookService.addBook(book);
+            Shop result = shopService.addShop(shop);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (IllegalArgumentException iae) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    // DELETE A BOOK
+    // DELETE A SHOP
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteBookById(@PathVariable int id) {
+    public ResponseEntity<?> deleteShopById(@PathVariable int id) {
         try {
-            bookService.deleteBook(id);
+            shopService.deleteShop(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (IllegalArgumentException iae) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

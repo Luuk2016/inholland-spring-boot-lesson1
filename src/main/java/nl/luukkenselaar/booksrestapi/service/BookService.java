@@ -1,40 +1,41 @@
 package nl.luukkenselaar.booksrestapi.service;
 
 import nl.luukkenselaar.booksrestapi.model.Book;
+import nl.luukkenselaar.booksrestapi.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class BookService {
 
-    private List<Book> books;
+    BookRepository bookRepository;
 
-    public BookService() {
-        books = new ArrayList<>();
-
-        books.add(new Book(0, "The Brothers Karamazov", "Fyodor Dostoevsky", 15.00, 1879));
-        books.add(new Book(1, "War and Peace", "Leo Tolstoy", 15.00, 1869));
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    // Get all books
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 
-    public Book getBookById(int id) {
-        return books.get(id);
+    // Get all books by year
+    public Iterable<Book> getBooksByYear(int year) {
+        return bookRepository.findBookByYear(year);
     }
 
-    public void addBook(Book book) {
-        books.add(book);
+    // Add a new Book
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
     }
 
-    public void updateBook(int id, Book book) {
-        books.set(id, book);
+    // Get a book by its ID
+    public Optional<Book> getBookById(int id) {
+        return bookRepository.findById(id);
     }
 
-    public void deleteBook(int id) {
-        books.remove(id);
-    }
+    // Delete a book
+    public void deleteBook(int id) { bookRepository.deleteById(id); }
 }

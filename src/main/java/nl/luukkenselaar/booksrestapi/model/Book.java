@@ -1,27 +1,32 @@
 package nl.luukkenselaar.booksrestapi.model;
+import javax.persistence.*;
 
+@Entity
 public class Book {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private String author;
     private double price;
     private int year;
 
-    public Book(int id, String name, String author, double price, int year) {
-        this.id = id;
+    @ManyToOne
+    private Shop shop;
+
+    public Book(String name, String author, double price, int year) {
         this.name = name;
         this.author = author;
         this.price = price;
         this.year = year;
     }
 
-    public int getId() {
-        return id;
+    public Book() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -54,5 +59,13 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }
